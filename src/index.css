@@ -28,6 +28,9 @@ main {
 .search-box {
   width: 100%;
   margin: 0 0 75px;
+  position: sticky;
+  top: 25px;
+  z-index: 1000;
 }
 
 .search-box .search-bar {
