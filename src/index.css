@@ -52,7 +52,7 @@ main {
   border-radius: 0 16px 0 0;
 }
 
-.navbar .button {
+.navbar .nav-button {
     width: 80%;
     height: 100%;
     margin: 0 auto;
@@ -68,7 +68,7 @@ main {
 
 .search-box {
   width: 100%;
-  margin: 0 0 20px;
+  margin: 0 0 25px;
   position: sticky;
   top: 25px;
   z-index: 1000;
@@ -154,7 +154,7 @@ main {
 
 .dayContainer {
   margin: 10px 0;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.25);
   border-radius: 16px;
   padding: 10px;
 }
@@ -188,4 +188,8 @@ main {
 
 .temp div {
   padding-top: 10px;
+}
+
+.daily-weather {
+  margin: 80px 0;
 }

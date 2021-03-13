@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import Daily from './components/Daily';
+import Live from './components/Live';
 
 function App() {
 
@@ -21,7 +24,7 @@ function App() {
   var long;
 
   const search = evt => {
-    if (evt.key === 'Enter' && query != '') {
+    if (evt.key === 'Enter' && query !== '') {
       fetch(`${api.urlLive}&q=${query}&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
@@ -101,6 +104,7 @@ function App() {
         : 'app'}
     >
       <main>
+
         <div className="search-box">
           <input
             type="search"
@@ -111,25 +115,39 @@ function App() {
             onKeyPress={search}
           />
         </div>
+
         {(typeof weather.main != "undefined") ? (
-          <div>
-            <div className="location-box">
-              <div className="location">{weather.name}, {weather.sys.country}</div>
-              <div className="date">{dateBuilder(new Date())}</div>
+          <Router>
+            <div className="navbar">
+              <NavLink to="/" exact className="nav-button" activeClassName="active">
+                Actual
+                  </NavLink>
+              <NavLink to="/daily" className="nav-button" activeClassName="active">
+                7 días
+                  </NavLink>
             </div>
-            <div className="weather-box">
-              <div className="picture">
-                <img alt="Weather Icon" src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} />
-              </div>
-              <div className="weather">
-                {capitalize(weather.weather[0].description)}
-              </div>
-              <div className="temp">
-                {Math.round(weather.main.temp)}°C
-            </div>
-            </div>
-            {layout}
-          </div>
+            <Switch>
+              <Route path="/daily">
+                <Daily
+                  name={weather.name}
+                  country={weather.sys.country}
+                  date={dateBuilder(new Date())}
+                  layout={layout}
+                />
+              </Route>
+              <Route path="/">
+                <Live
+                  name={weather.name}
+                  country={weather.sys.country}
+                  date={dateBuilder(new Date())}
+                  icon={weather.weather[0].icon}
+                  description={capitalize(weather.weather[0].description)}
+                  temp={Math.round(weather.main.temp)}
+                />
+              </Route>
+            </Switch>
+          </Router>
+
         ) : ('')}
 
       </main>
