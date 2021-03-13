@@ -1,32 +1,78 @@
 import React, { useState } from 'react'
 
-const api = {
-  key: process.env.REACT_APP_WEATHER_KEY,
-  base: "https://api.openweathermap.org/data/2.5/"
-}
-
 function App() {
+
+  const api = {
+    key: process.env.REACT_APP_WEATHER_KEY,
+    urlLive: "https://api.openweathermap.org/data/2.5/weather?units=metric&lang=es",
+    urlDaily: "https://api.openweathermap.org/data/2.5/onecall?units=metric&lang=es&exclude=current,minutely,hourly,alerts"
+  }
+
+  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState('');
+  const [layout, setLayout] = useState('');
+
+  var daily = [];
+  var lay = [];
+  var lat;
+  var long;
 
   const search = evt => {
-    if (evt.key === 'Enter') {
-      console.log(api.key);
-      fetch(`${api.base}weather?q=${query}&units=metric&lang=es&APPID=${api.key}`)
+    if (evt.key === 'Enter' && query != '') {
+      fetch(`${api.urlLive}&q=${query}&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
-          setWeather(result);
-          setQuery('');
-          console.log(result);
+          if (typeof result.coord != "undefined") {
+            setWeather(result);
+            lat = result.coord.lat;
+            long = result.coord.lon;
+          }
+        })
+        .then(() => {
+          if (typeof lat != "undefined" && typeof long != "undefined") {
+            fetch(`${api.urlDaily}&lat=${lat}&lon=${long}&appid=${api.key}`)
+              .then(res => res.json())
+              .then(result => {
+                daily = result.daily;
+              })
+              .then(() => {
+                if (typeof daily != "undefined") {
+                  daily.map(el => {
+                    const d = getDate(el.dt);
+                    lay.push(
+                      <div className="dayContainer">
+                        <div className="date">
+                          {`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`}
+                        </div>
+                        <div className="day">
+                          <div class="picture">
+                            <img alt="Weather Icon" src={`http://openweathermap.org/img/wn/${el.weather[0].icon}@2x.png`} />
+                          </div>
+                          <div class="temp">
+                            <div class="min">
+                              {Math.round(el.temp.min)}°C
+                      </div>
+                            <div class="max">
+                              {Math.round(el.temp.max)}°C
+                      </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  });
+                  setLayout(lay);
+                }
+              })
+          }
+
         });
     }
   }
 
   const dateBuilder = (d) => {
-    let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    let days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-
     let day = days[d.getDay()];
     let date = d.getDate();
     let month = months[d.getMonth()];
@@ -38,6 +84,12 @@ function App() {
   const capitalize = (s) => {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toUpperCase() + s.slice(1)
+  }
+
+  const getDate = (u) => {
+    const milis = u * 1000;
+    const dateObject = new Date(milis);
+    return dateObject;
   }
 
   return (
@@ -67,7 +119,7 @@ function App() {
             </div>
             <div className="weather-box">
               <div className="picture">
-                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} />
+                <img alt="Weather Icon" src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} />
               </div>
               <div className="weather">
                 {capitalize(weather.weather[0].description)}
@@ -76,12 +128,14 @@ function App() {
                 {Math.round(weather.main.temp)}°C
             </div>
             </div>
+            {layout}
           </div>
         ) : ('')}
 
       </main>
     </div>
   );
+
 }
 
 export default App;

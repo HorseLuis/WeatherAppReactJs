@@ -25,9 +25,50 @@ main {
   padding: 25px;
 }
 
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 10000;
+  background-color: #5c6bc0;
+  display: inline-flex;
+  border-radius: 16px 16px 0 0;
+}
+
+.navbar a {
+  width: 50%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navbar a:nth-child(1) {
+  border-radius: 16px 0 0 0;
+}
+
+.navbar a:nth-child(2) {
+  border-radius: 0 16px 0 0;
+}
+
+.navbar .button {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 17px;
+    color: #FFF;
+    text-shadow: 3px 3px rgba(50,50,70,0.5);
+    font-size: 1.3em;
+}
+
+.active {
+  background-color: #26418f;
+}
+
 .search-box {
   width: 100%;
-  margin: 0 0 75px;
+  margin: 0 0 20px;
   position: sticky;
   top: 25px;
   z-index: 1000;
@@ -57,21 +98,28 @@ main {
   background: rgba(255,255,255,0.75);
 }
 
+.location-box {
+  position: sticky;
+    top: 100px;
+    padding: 10px 0;
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 16px;
+    z-index: 100;
+}
+
 .location-box .location {
-  color: #FFF;
-  font-size: 32px;
+  color: #000;
+  font-size: 2em;
   font-weight: 500;
   text-align: center;
-  text-shadow: 3px 3px rgba(50,50,70,0.5);
 }
 
 .location-box .date {
-  color: #FFF;
-  font-size: 20px;
+  color: #000;
+  font-size: 1.1em;
   font-weight: 300;
   font-style: italic;
   text-align: center;
-  text-shadow: 2px 2px rgba(50,50,70,0.5);
 }
 
 .weather-box {
@@ -90,7 +138,7 @@ main {
   border-radius: 16px;
   padding: 15px 25px;
   color: #FFF;
-  font-size: 102px;
+  font-size: 6.5em;
   font-weight: 900;
   text-shadow: 3px 6px rgba(50,50,70,0.5);
   text-align: center;
@@ -99,7 +147,45 @@ main {
 
 .weather-box .weather {
   color: #FFF;
-  font-size: 48px;
+  font-size: 3em;
   font-weight: 700;
   text-shadow: 3px 3px rgba(50,50,70,0.5);
+}
+
+.dayContainer {
+  margin: 10px 0;
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.dayContainer .date {
+  text-align: center;
+    color: #FFF;
+    text-shadow: 3px 3px rgb(50 50 70 / 10%);
+    font-size: 1.2rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #FFF;
+}
+
+.day {
+  display: grid;
+  grid-template-columns: 60% 30%;
+}
+
+.day .picture {
+  text-align: left;
+}
+
+.temp {
+  text-align: right;
+  display: block;
+  color: #FFF;
+  text-shadow: 3px 3px rgb(50 50 70 / 10%);
+  font-size: 1.5rem;
+  margin-top: 5px;
+}
+
+.temp div {
+  padding-top: 10px;
 }
