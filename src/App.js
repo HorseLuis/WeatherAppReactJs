@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
-import Daily from './components/Daily';
-import Live from './components/Live';
+import Daily from './components/Daily.jsx';
+import Live from './components/Live.jsx';
 
 function App() {
 
